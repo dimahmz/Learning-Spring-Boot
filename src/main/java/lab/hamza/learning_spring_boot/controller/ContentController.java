@@ -1,6 +1,7 @@
 package lab.hamza.learning_spring_boot.controller;
 
 
+import jakarta.validation.Valid;
 import lab.hamza.learning_spring_boot.model.Content;
 import lab.hamza.learning_spring_boot.repository.ContentCollectionRepository;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ContentController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-     public void create(@RequestBody Content content) {
+     public void create(@Valid @RequestBody Content content) {
         if(repository.existsById(content.id())){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Content already exists");
         }
@@ -39,7 +40,7 @@ public class ContentController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Integer id, @RequestBody Content content) {
+    public void update(@Valid @RequestBody Content content) {
         repository.save(content);
     }
 
