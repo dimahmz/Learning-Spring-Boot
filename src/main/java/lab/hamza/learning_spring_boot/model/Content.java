@@ -3,12 +3,18 @@ package lab.hamza.learning_spring_boot.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lab.hamza.learning_spring_boot.model.audit.AuditableEntity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
-
 
 @Entity
 @Table(name = "contents")
-public class Content {
+@Getter
+@Setter
+@ToString
+public class Content extends AuditableEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -20,28 +26,4 @@ public class Content {
         @DateTimeFormat
 
         private String url;
-
-        public Long getId() {
-                return id;
-        }
-
-        public void setId(Long id) {
-                this.id = id;
-        }
-
-        public String getDescription() {
-                return description;
-        }
-
-        public void setDescription(String description) {
-                this.description = description;
-        }
-
-        public String getUrl() {
-                return url;
-        }
-
-        public void setUrl(String url) {
-                this.url = url;
-        }
 }
