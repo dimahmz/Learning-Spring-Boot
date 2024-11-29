@@ -2,55 +2,51 @@ package lab.hamza.learning_spring_boot.controller;
 
 
 import jakarta.validation.Valid;
+import lab.hamza.learning_spring_boot.dto.ContentDto;
 import lab.hamza.learning_spring_boot.model.Content;
-import lab.hamza.learning_spring_boot.repository.ContentCollectionRepository;
+import lab.hamza.learning_spring_boot.service.ContentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/content")
 @CrossOrigin
-public class ContentController {
-    private final ContentCollectionRepository repository;
+public class  ContentController {
 
-    public ContentController(ContentCollectionRepository repository) {
-        this.repository = repository;
+    private final ContentService contentService;
+
+    public ContentController(ContentService contentService) {
+        this.contentService = contentService;
     }
 
     @GetMapping("")
-    public List<Content> getAll() {
-        return repository.findAll();
+    public List<ContentDto> getAll() {
+        return contentService.getAllContents();
     }
 
     @GetMapping("/{id}")
-    public Content getById(@PathVariable Integer id) {
-            return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find content"));
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
+        return contentService.getContent(id);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-     public void create(@Valid @RequestBody Content content) {
-        if(repository.existsById(content.id())){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Content already exists");
-        }
-        repository.save(content);
+    public ResponseEntity<Content> create(@Valid @RequestBody ContentDto content) {
+        return contentService.addContent(content);
     }
 
     @PutMapping("/{id}")
-    public void update(@Valid @RequestBody Content content) {
-        repository.save(content);
+    public ResponseEntity<Content> update(@PathVariable Long id, @Valid @RequestBody ContentDto content) {
+        return contentService.updateContent(id, content);
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
-        if(!repository.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find content");
-        }
-        repository.deleteByID(id);
+    public ResponseEntity<Object> deleteById(@PathVariable Long id) {
+        return contentService.deleteContent(id);
     }
 
 }
