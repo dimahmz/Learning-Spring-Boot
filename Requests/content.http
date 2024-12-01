@@ -1,0 +1,33 @@
+### get all the contents
+GET http://localhost:8080/api/content
+
+<> 2024-11-25T203621.200.json
+
+### get one content by id
+GET http://localhost:8080/api/content/1
+
+
+### create new content
+POST http://localhost:8080/api/content
+Content-Type: application/json
+
+{
+  "description": "A deep dive into processes",
+  "url": "Example.com"
+}
+
+### update a content
+PUT http://localhost:8080/api/content/1
+Content-Type: application/json
+
+{
+
+  "description": "updated!",
+  "url": "aptiv.com"
+}
+
+### delete a content
+DELETE http://localhost:8080/api/content/1
+
+
+
